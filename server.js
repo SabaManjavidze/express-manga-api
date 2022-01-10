@@ -11,7 +11,7 @@ app.use(cors());
 
 
 app.get("/",(req,res)=>{
-    res.send("hello")
+    res.send("Welcome To Sashiburi Api. If you are not owner of this website fuck you")
 })
 async function getHomePage(){
     const html = await axios.get(main_url)
