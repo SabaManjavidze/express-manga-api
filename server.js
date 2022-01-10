@@ -1,6 +1,7 @@
 const express = require("express")
 const cheerio = require("cheerio")
 const axios = require("axios").default
+var FormData = require('form-data');
 
 const app = express()
 const cors = require("cors")
@@ -9,7 +10,9 @@ const main_url = "https://ww.mangakakalot.tv"
 app.use(cors()); 
 
 
-
+app.get("/",(req,res)=>{
+    res.send("hello")
+})
 async function getHomePage(){
     const html = await axios.get(main_url)
     const $ = cheerio.load(html.data)
@@ -41,7 +44,6 @@ app.get("/api/homepage",async (req,res)=>{
 })
 async function getMangaDetails(manga_id){
     const {data} = await axios.get(`${main_url}/manga/manga-${manga_id}`)
-    console.log(`${main_url}/manga/manga-${manga_id}`)
     const $ = cheerio.load(data)
     const arr = []
     const keys = [
@@ -89,6 +91,44 @@ app.get("/api/manga/:mangaId/:chap",async (req,res)=>{
     res.send(txt)
 
 })
+async function getMangaPreview (query){
+    var search = new FormData();
+    search.append('searchword', query);
+
+    const {data} = await axios({
+        method:"post",
+        url:`https://manganato.com/getstorysearchjson/`,
+        headers: { 
+            ...search.getHeaders()
+          },
+        data:search
+    })
+    const data_arr = []
+    data.map(child=>{
+        const obj = {}
+        obj["title"] = child.name.replace(/(<([^>]+)>)/ig, '')
+        const word_list = child.link_story.split("/")
+        obj["manga_id"]= word_list[word_list.length-1].split("-")[1]
+        obj["author"]= child.author
+        obj["chapters"] = child.lastchapter
+        data_arr.push(obj)
+    })
+    return data_arr
+}
+app.get("/api/searchstory/:query",async (req,res)=>{
+    const {query} = req.params
+    const arr = await getMangaPreview(query)
+    res.json(arr)
+})
+function cleanStr(str) {
+    while (str.indexOf("\n") > -1) {
+        str = str.replace("\n", " ");
+    }
+    while (str.indexOf("  ") > -1) {
+        str = str.replace("  ", " ");
+    }
+    return str;
+}
 const getManga = async (query)=>{
     const {data} = await axios.get(`${main_url}/search/${query}`)
     const $ = cheerio.load(data)
@@ -122,7 +162,8 @@ const getManga = async (query)=>{
         const object = {}
         const details = []
         $("span",parentElem).each((childIdx,childElem)=>{
-            object[keys[childIdx]]=$(childElem).html().trim()
+            const str = $(childElem).text().replace("\n","")
+            object[keys[childIdx]]=cleanStr($(childElem).text())
         })
         details.push(object)
         obj["details"] = details
@@ -132,12 +173,14 @@ const getManga = async (query)=>{
     })
     return arr
 }
+
+
 app.get("/api/search/:query",async (req,res)=>{
     const {query} = req.params
     const arr = await getManga(query)
     res.json(arr)
-
 })
-const port = process.env.PORT||5000
+
+const port = process.env.PORT||4000
 app.listen(port,()=>{console.log(`server darbis dzmao port : ${port}`)})
 
