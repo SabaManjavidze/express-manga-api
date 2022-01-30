@@ -63,7 +63,14 @@ async function getMangaDetails(manga_id){
         })
         arr.push(obj)
     })
-    return arr;
+    const img_sel = "body > div.body-site > div.container.container-main > div.container-main-left > div.panel-story-info > div.story-info-left > span.info-image > img"
+    const title_sel = "body > div.body-site > div.container.container-main > div.container-main-left > div.panel-story-info > div.story-info-right > h1"
+    const details = {}
+    const img_url = $(img_sel).attr().src
+    const title = $(title_sel).text()
+    details["img_url"] = img_url
+    details["title"] = title
+    return {chapters:arr,details:details};
 }
 app.get("/api/manga/:mangaId",async (req,res)=>{
     const {mangaId} = req.params
