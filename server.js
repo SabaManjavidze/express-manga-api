@@ -72,6 +72,7 @@ async function getMangaDetails(manga_id){
     const title = $(title_sel).text()
     details["img_url"] = img_url
     details["title"] = title
+    details["manga_id"] = manga_id
     return {details:details,chapters:arr};
 }
 app.get("/api/manga/:mangaId",async (req,res)=>{
