@@ -43,7 +43,9 @@ app.get("/api/homepage",async (req,res)=>{
     res.json(arr)
 })
 async function getMangaDetails(manga_id){
-    const {data} = await axios.get(`${main_url}/manga/manga-${manga_id}`)
+    const url = `${main_url}/manga/manga-${manga_id}`
+    console.log(url);
+    const {data} = await axios.get(url)
     const $ = cheerio.load(data)
     const arr = []
     const keys = [
@@ -63,14 +65,14 @@ async function getMangaDetails(manga_id){
         })
         arr.push(obj)
     })
-    const img_sel = "body > div.body-site > div.container.container-main > div.container-main-left > div.panel-story-info > div.story-info-left > span.info-image > img"
-    const title_sel = "body > div.body-site > div.container.container-main > div.container-main-left > div.panel-story-info > div.story-info-right > h1"
+    const img_sel = "body > div.container > div.main-wrapper > div.leftCol > div.manga-info-top > div > img"
+    const title_sel = "body > div.container > div.main-wrapper > div.leftCol > div.manga-info-top > ul > li:nth-child(1) > h1"
     const details = {}
     const img_url = $(img_sel).attr().src
     const title = $(title_sel).text()
     details["img_url"] = img_url
     details["title"] = title
-    return {chapters:arr,details:details};
+    return {details:details,chapters:arr};
 }
 app.get("/api/manga/:mangaId",async (req,res)=>{
     const {mangaId} = req.params
