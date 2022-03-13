@@ -45,7 +45,7 @@ app.get("/api/homepage", async (req, res) => {
 });
 async function getMangaDetails(manga_id) {
   const url = `${main_url}/manga/${manga_id}`;
-  console.log(url);
+  //   console.log(url);
   const { data } = await axios.get(url);
   const $ = cheerio.load(data);
   const arr = [];
@@ -85,7 +85,7 @@ app.get("/api/manga/:mangaId", async (req, res) => {
 async function getMangaChapter(manga_id, chap) {
   const { data } = await axios({
     method: "GET",
-    url: `${main_url}/chapter/manga-${manga_id}/chapter-${chap}`,
+    url: `${main_url}/chapter/${manga_id}/chapter-${chap}`,
   });
   const $ = cheerio.load(data);
   const arr = [];
