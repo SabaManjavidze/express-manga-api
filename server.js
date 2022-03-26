@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
   );
 });
 async function getHomePage() {
-  const html = await axios.get(main_url);
+  const html = await axios.get(`${main_url}/home`);
   const $ = cheerio.load(html.data);
   const arr = [];
   $(".itemupdate").each((parentIdx, parentElem) => {
@@ -28,7 +28,7 @@ async function getHomePage() {
       if (childIdx == 0) {
         obj["title"] = $(childElem).text().trim();
       } else {
-        preview["chap_title"] = $("span", childElem).text().trim();
+        preview["chap_title"] = $("span > a", childElem).text().trim();
         preview["upload_date"] = $("i", childElem).text().trim();
         previewChaps.push(preview);
       }
