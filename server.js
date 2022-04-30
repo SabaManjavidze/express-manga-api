@@ -58,7 +58,7 @@ async function getMangaDetails(manga_id) {
       $(parentElem).children((childIdx, childElem) => {
         if (childIdx == 0) {
           const splited = $("span > a", childElem).attr().href.split("/");
-          obj["chapter_num"] = splited[splited.length - 1].split("-")[1];
+          obj["chap_num"] = splited[splited.length - 1].split("-")[1];
         }
         obj[keys[childIdx]] = $(childElem).text().trim();
       });
@@ -161,7 +161,7 @@ const getManga = async (query) => {
       const chap_main_node = $("a", childElem);
 
       const chap_str = chap_main_node.attr().href.split("/");
-      chap_obj["chapter_num"] = chap_str[chap_str.length - 1].split("-")[1];
+      chap_obj["chap_num"] = chap_str[chap_str.length - 1].split("-")[1];
 
       chap_obj["chap_title"] = chap_main_node.text().trim();
 
