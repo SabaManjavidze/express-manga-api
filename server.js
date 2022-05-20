@@ -47,7 +47,7 @@ app.get("/api/search/:query", async (req, res) => {
   res.json(arr);
 });
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 9000;
 app.listen(port, () => {
   console.log(`server darbis dzmao port : ${port}`);
 });
