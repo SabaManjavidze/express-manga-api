@@ -7,7 +7,7 @@ export const getManga = async (query, limit) => {
   const { data } = await axios.get(`${main_url}/search/${query}`);
   const $ = cheerio.load(data);
   const arr = [];
-  const keys = ["author", "upload_date", "views"];
+  const keys = ["author", "last_updated", "views"];
   $(".story_item").each((parentIdx, parentElem) => {
     if (limit && parentIdx >= limit) return;
     const obj = {};
@@ -36,7 +36,7 @@ export const getManga = async (query, limit) => {
     const details = [];
     $("span", parentElem).each((childIdx, childElem) => {
       const str = $(childElem).text().replace("\n", "");
-      object[keys[childIdx]] = cleanStr($(childElem).text());
+      object[keys[childIdx]] = cleanStr($(childElem).text().split(": ")[1]);
     });
     details.push(object);
     obj["details"] = details;
