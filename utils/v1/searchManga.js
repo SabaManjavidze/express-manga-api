@@ -3,7 +3,7 @@ import axios from "axios";
 import { main_url } from "./variables.js";
 import { cleanStr } from "./index.js";
 
-export const getManga = async (query, limit) => {
+export const searchManga = async (query, limit) => {
   const { data } = await axios.get(`${main_url}/search/${query}`);
   const $ = cheerio.load(data);
   const arr = [];
