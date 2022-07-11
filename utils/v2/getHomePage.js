@@ -1,10 +1,10 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import { cleanStr } from "../v1/index.js";
-import { main_url } from "./variables.js";
+import { v1_url } from "../../variables.js";
 
 export const getHomePage = async () => {
-  const { data } = await axios.get(`${main_url}`);
+  const { data } = await axios.get(`${v1_url}/index.php`);
 
   const $ = cheerio.load(data);
   const manga_list = $(
@@ -19,8 +19,8 @@ export const getHomePage = async () => {
     $(".div_item > .info-manga > .name-chapter", parentElem).each(
       (chapterIdx, chapterElem) => {
         const chap_obj = {};
-        chap_obj["upload_date"] = $("span", chapterElem).text();
-        chap_obj["chap_title"] = cleanStr(
+        chap_obj["chap_title"] = $("span", chapterElem).text();
+        chap_obj["upload_date"] = cleanStr(
           $(".date_created", chapterElem).text().replace("new ", "").trim()
         );
         chapters.push(chap_obj);

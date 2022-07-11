@@ -1,11 +1,11 @@
 import cheerio from "cheerio";
 import axios from "axios";
-import { main_url } from "./variables.js";
+import { v1_url } from "../../variables.js";
 
 export const getMangaChapter = async (manga_id, chap) => {
   const { data } = await axios({
     method: "GET",
-    url: `${main_url}/chapter/${manga_id}/chapter-${chap}`,
+    url: `${v1_url}/chapter/${manga_id}/chapter-${chap}`,
   });
   const $ = cheerio.load(data);
   const arr = [];

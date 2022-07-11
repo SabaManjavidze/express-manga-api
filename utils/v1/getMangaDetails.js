@@ -1,9 +1,9 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import { main_url } from "./variables.js";
+import { v1_url } from "../../variables.js";
 
 export const getMangaDetails = async (manga_id) => {
-  const url = `${main_url}/manga/${manga_id}`;
+  const url = `${v1_url}/manga/${manga_id}`;
   //   console.log(url);
   const { data } = await axios.get(url);
   const $ = cheerio.load(data);

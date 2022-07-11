@@ -1,10 +1,10 @@
 import cheerio from "cheerio";
 import axios from "axios";
-import { main_url } from "./variables.js";
 import { cleanStr } from "./index.js";
+import { v1_url } from "../../variables.js";
 
 export const searchManga = async (query, limit) => {
-  const { data } = await axios.get(`${main_url}/search/${query}`);
+  const { data } = await axios.get(`${v1_url}/search/${query}`);
   const $ = cheerio.load(data);
   const arr = [];
   const keys = ["author", "last_updated", "views"];

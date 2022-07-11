@@ -1,9 +1,9 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import { main_url } from "./variables.js";
+import { v1_url } from "../../variables.js";
 
 export const getHomePage = async (limit) => {
-  const { data } = await axios.get(`${main_url}/home`);
+  const { data } = await axios.get(`${v1_url}/home`);
   const $ = cheerio.load(data);
   const arr = [];
 
